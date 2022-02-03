@@ -8,9 +8,9 @@ namespace Sara
     public class Program
     {
         private static readonly Logger _logger = LogManager.GetCurrentClassLogger();
-        private static DiscordSocketClient _client;
+        private static DiscordSocketClient? _client = null;
 
-        public static async Task Main(string[] args)
+        public static async Task Main()
         {
             // setup bot client
             _client = new DiscordSocketClient();
@@ -20,6 +20,10 @@ namespace Sara
             var botToken = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
             await _client.LoginAsync(TokenType.Bot, botToken);
             await _client.StartAsync();
+
+            // start command handler
+            var handler = new Handler.CommandHandler(_client, new Discord.Commands.CommandService());
+            await handler.InstallCommandsAsync();
 
             // block task until the program is closed
             await Task.Delay(-1);
