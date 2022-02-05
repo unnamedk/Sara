@@ -1,0 +1,11 @@
+{
+  "profiles": {
+    "Sara": {
+      "commandName": "Project"
+    },
+    "Docker": {
+      "commandName": "Docker",
+      "DockerfileRunArguments": "--env-file ./env.vars"
+    }
+  }
+}

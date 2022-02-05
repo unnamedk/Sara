@@ -12,12 +12,19 @@ namespace Sara
 
         public static async Task Main()
         {
+            // retrieve bot token
+            var botToken = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
+            if (botToken == null)
+            {
+                _logger.Error("Could not find Discord OAuth2 token in the environment variables");
+                return;
+            }
+
             // setup bot client
             _client = new DiscordSocketClient();
             _client.Log += Log;
 
             // try to log into Discord
-            var botToken = Environment.GetEnvironmentVariable("DISCORD_TOKEN");
             await _client.LoginAsync(TokenType.Bot, botToken);
             await _client.StartAsync();
 
@@ -29,9 +36,10 @@ namespace Sara
             await Task.Delay(-1);
         }
 
-        private static async Task Log(LogMessage msg)
+        private static Task Log(LogMessage msg)
         {
             _logger.Info(msg);
+            return Task.CompletedTask;
         }
     }
 }
